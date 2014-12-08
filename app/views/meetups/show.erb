@@ -3,6 +3,6 @@
 <p>What?</p>
 <p><%= @meetup.description %></p>
 
-<form id="join" action="/meetups/join" method="post">
+<form id="join" action="/meetups/<%= params[:id] %>/join" method="post">
   <input type="submit" name="join" value="Join This Meetup">
 </form>

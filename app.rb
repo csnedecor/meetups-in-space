@@ -41,7 +41,7 @@ end
 
 post '/meetups' do
   meetup = Meetup.create(name: params[:name], description: params[:description], location: params[:location])
-  if meetup.errors
+  if !meetup.errors.empty?
     flash[:error] = meetup.errors.full_messages
     redirect "/meetups/new"
   else
@@ -55,9 +55,10 @@ get '/meetups/:id' do
   erb :'meetups/show'
 end
 
-post '/meetups/join' do
+post '/meetups/:id/join' do
   meetup = Meetup.find(params[:id])
   user = current_user
+  join = MeetupsUser.create(user_id: user.id, meetup_id: meetup.id)
   flash[:notice] = "You joined this meetup!"
   redirect "/meetups/#{meetup.id}"
 end
