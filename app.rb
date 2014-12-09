@@ -58,9 +58,13 @@ end
 post '/meetups/:id/join' do
   meetup = Meetup.find(params[:id])
   user = current_user
-  join = MeetupsUser.create(user_id: user.id, meetup_id: meetup.id)
-  flash[:notice] = "You joined this meetup!"
-  redirect "/meetups/#{meetup.id}"
+  if signed_in?
+    join = MeetupsUser.create(user_id: user.id, meetup_id: meetup.id)
+    flash[:notice] = "You joined this meetup!"
+    redirect "/meetups/#{meetup.id}"
+  else
+    authenticate!
+  end
 end
 
 get '/auth/github/callback' do
