@@ -14,15 +14,26 @@
 <% end %>
 
 <h2>Attendees</h2>
-<% @meetup.users.each do |user| %>
-  <img src = "<%= user.avatar_url %>" class= "avatar"> <%= user.username %>
+
+<% if @meetup.users.empty? %>
+  <p>No one has signed up yet. Be the first!</p>
+<% else %>
+  <% @meetup.users.each do |user| %>
+    <img src = "<%= user.avatar_url %>" class= "avatar"> <%= user.username %>
+  <% end %>
 <% end %>
 
 <h2>Comments</h2>
 
-<% @comments.each do |com| %>
-  <h4><%= com.title %></h4>
-  <p><%= com.body %><p>
+<% if @comments.empty? %>
+  <p>
+    No comments here. Add one below!
+  </p>
+<% else %>
+  <% @comments.each do |com| %>
+    <h4><%= com.title %></h4>
+    <p><%= com.body %><p>
+  <% end %>
 <% end %>
 
 <form id="comment" action="/meetups/<%= params[:id] %>/comment" method="post">
