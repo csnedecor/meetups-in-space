@@ -3,6 +3,25 @@
 <p>What?</p>
 <p><%= @meetup.description %></p>
 
-<form id="join" action="/meetups/<%= params[:id] %>/join" method="post">
-  <input type="submit" name="join" value="Join This Meetup">
+<% if @meetup.users.include?(current_user) %>
+  <form id="leave" action="/meetups/<%= params[:id] %>/leave" method="post">
+    <input type="submit" name="leave" value="Leave this Meetup">
+  </form>
+<% else %>
+  <form id="join" action="/meetups/<%= params[:id] %>/join" method="post">
+    <input type="submit" name="join" value="Join This Meetup">
+  </form>
+<% end %>
+
+<h2>Attendees</h2>
+
+<% @meetup.users.each do |user| %>
+  <img src = "<%= user.avatar_url %>" class= "avatar"> <%= user.username %>
+<% end %>
+
+<h2>Comments</h2>
+<form id="comment" action="/meetups/<%= params[:id] %>" method="post">
+  <input type="text" name="title">
+  <input type="textarea" name="body">
+  <input type="submit" name="submit" value="Add a comment">
 </form>

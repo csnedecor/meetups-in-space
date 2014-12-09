@@ -38,3 +38,8 @@ a:visited {
   padding: 1em;
   background-color: #3B9089;
 }
+img.avatar{
+  width:50px;
+  line-height:100px;
+  vertical-align:middle;
+}

@@ -67,6 +67,14 @@ post '/meetups/:id/join' do
   end
 end
 
+post '/meetups/:id/leave' do
+  meetup = Meetup.find(params[:id])
+  user = current_user
+  leave = meetup.users.destroy(user.id)
+  flash[:notice] = "You left this meetup!"
+  redirect "/meetups/#{meetup.id}"
+end
+
 get '/auth/github/callback' do
   auth = env['omniauth.auth']
 
