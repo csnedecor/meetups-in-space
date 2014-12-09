@@ -59,9 +59,18 @@ end
 post '/meetups/:id/comment' do
   meetup = Meetup.find(params[:id])
   user = current_user
-  
+
+  @user_id = []
+  meetup.users.each do |o|
+    @user_id << o.id
+  end
+
   if !signed_in?
     authenticate!
+  end
+  if signed_in? && !@user_id.include?(user.id)
+    flash[:notice] = "You must join this meetup to comment."
+    redirect "/meetups/#{meetup.id}"
   end
 
   comment = Comment.create(title: params[:title], body: params[:body], user_id: user.id, meetup_id: meetup.id)
