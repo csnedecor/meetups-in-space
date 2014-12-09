@@ -14,14 +14,19 @@
 <% end %>
 
 <h2>Attendees</h2>
-
 <% @meetup.users.each do |user| %>
   <img src = "<%= user.avatar_url %>" class= "avatar"> <%= user.username %>
 <% end %>
 
 <h2>Comments</h2>
-<form id="comment" action="/meetups/<%= params[:id] %>" method="post">
-  <input type="text" name="title">
-  <input type="textarea" name="body">
+
+<% @comments.each do |com| %>
+  <h4><%= com.title %></h4>
+  <p><%= com.body %><p>
+<% end %>
+
+<form id="comment" action="/meetups/<%= params[:id] %>/comment" method="post">
+  Title: <input type="text" name="title">
+  Comment: <input type="textarea" name="body">
   <input type="submit" name="submit" value="Add a comment">
 </form>

@@ -52,7 +52,27 @@ end
 
 get '/meetups/:id' do
   @meetup = Meetup.find(params[:id])
+  @comments = Comment.where(meetup_id: params[:id])
   erb :'meetups/show'
+end
+
+post '/meetups/:id/comment' do
+  meetup = Meetup.find(params[:id])
+  user = current_user
+  
+  if !signed_in?
+    authenticate!
+  end
+
+  comment = Comment.create(title: params[:title], body: params[:body], user_id: user.id, meetup_id: meetup.id)
+
+  if signed_in? && !comment.errors.empty?
+    flash[:error] = comment.errors.full_messages
+    redirect "/meetups/#{meetup.id}"
+  elsif signed_in?
+    flash[:notice] = "You successfully posted a comment"
+    redirect "/meetups/#{meetup.id}"
+  end
 end
 
 post '/meetups/:id/join' do
